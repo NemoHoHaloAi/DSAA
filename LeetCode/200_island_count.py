@@ -1,6 +1,6 @@
 class Solution(object):
     '''
-    https://leetcode-cn.com/problems/number-of-islands/solution/dao-yu-shu-liang-76ms162mb-by-thoridal-starsfury/
+    题目链接：https://leetcode-cn.com/problems/number-of-islands/solution/dao-yu-shu-liang-76ms162mb-by-thoridal-starsfury/
     思路分析：遍历数组，遇到1就进入一个while循环，该循环负责把岛屿的所有部分找出来并标为0，避免对后续便利的影响，整体比较简单；
     '''
     def numIslands(self, grid):
