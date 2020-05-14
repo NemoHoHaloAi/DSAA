@@ -16,7 +16,7 @@
 # 链接：https://leetcode-cn.com/problems/single-number
 
 class Solution:
-    def singleNumber(self, nums: List[int]) -> int:
+    def singleNumber(self, nums):
         '''
         解题思路：
         
