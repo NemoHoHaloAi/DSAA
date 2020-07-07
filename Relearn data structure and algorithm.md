@@ -969,7 +969,65 @@ shortestRoute(matrix,len(matrix[0])-1)
     print(LCS("13452439","123456"))
     ```
 
+## 真题
 
-## 真题详解
+### 定位问题才能更好地解决问题：开发前的复杂度分析与技术选型
+
+分析实际算法问题：
+
+1. 明确目标：尽可能低的时间和空间复杂度，解决问题并实现相关代码；
+2. 定位问题：更高效的解决问题；
+    1. 什么类型的问题：排序、查找、最优化；
+    2. 复杂度下限是多少，即最低的时间复杂度可能是多少；
+    3. 使用哪些数据结构或者算法思维能解决问题；
+
+在无序数组中找最大值：
+
+1. 目标：找到最大值max_val；
+2. 定位：
+    1. 查找类型的问题；
+    2. 查找下限是O(logn)，但是要求是有序，这里复杂度最低是O(n)；
+    3. 不需要复杂的数据结构，一层循环，动态更新最大值即可；
+
+#### 通用解题的方法论
+
+1. 复杂度分析：问题复杂度的上限、下限各是多少；
+2. 定位问题：定位问题并设计数据结构与算法思维；
+3. 数据操作分析：根据增、删、查和数据顺序关系去选择合适的数据结构，利用空间换取时间；
+4. 编码实现；
+
+#### 案例
+
+- 例1：无序数组中找出出现此处最多的数字；
+
+    ```python
+    arr = [1, 3, 4, 3, 4, 1, 3, 1]
+    dict_ = {}
+    for num in arr:
+        dict_[num] = dict_.get(num,0)+1
+    max_count = 0
+    max_val = 0
+    for k in dict_.keys():
+        if dict_[k] > max_count:
+            max_count = dict_[k]
+            max_val = k
+    print(max_val,max_count)
+    ```
+
+- 例2：two sums，无序数组中找到两个数字之和为指定值；
+
+    ```python
+    arr = [6,5,8,1,4,2,3,10,0,11,7]
+    target = 10
+    dict_ = {}
+    idxs = []
+    for idx,num in enumerate(arr):
+        if target-num in dict_.keys():
+            idxs = [dict_[target-num],idx]
+            break
+        dict_[num] = idx
+    print(idxs)
+    ```
 
 ## 最后
+
