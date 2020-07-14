@@ -732,7 +732,7 @@ binarySearch(arr,9)
 
 ### 动态规划：通过最优子结构，完成复杂问题求解 
 
-扩展理解：
+扩展理解1：
 
 > 1+1+1+1+1+1+1+1 = ?
 >
@@ -742,11 +742,11 @@ binarySearch(arr,9)
 >
 > 等于9
 >
-> 为什么这么快得到答案，因为我们知道其余部分为8，记住了，就不需要在计算一遍，所谓DP，就是一种fancy的方式表达记住了一部分从而节省时间的方法；
+> 为什么这么快得到答案，因为我们知道其余部分为8，记住了，就不需要在计算一遍，所谓DP，就是一种fancy的方式表达记住了一部分从而节省时间的方法，所以基础依然是空间换时间；
 
 扩展理解2：
 
-> 对于最短路径计算，加入某一层有A,B,C三个节点，那么到此我们只需要保留从起始点到A的最短路径，到B的最短路径，到C的最短路径即可，无需保留全部可能的路径；
+> 对于最短路径计算，假如某一层有A,B,C三个节点，那么到此我们只需要保留从起始点到A的最短路径，到B的最短路径，到C的最短路径这三条即可，无需保留全部可能的路径；
 
 [扩展理解3](https://www.zhihu.com/question/39948290)：
 
@@ -844,7 +844,7 @@ binarySearch(arr,9)
 5. **定目标**：写出代表多轮决策目标的指标函数V_k,n，由目标函数确定每一轮的选择；
 6. **确认终止条件**；
 
-基本概念：
+基本概念： 
 
 - **策略**：每轮的动作就是决策，多轮决策合在一起称之为策略；
 - **策略集合**：每轮决策的不同会使得策略不同，所有不同的策略组成策略集合，动态规划的任务就是从中选择一个最佳的策略；
@@ -1028,6 +1028,133 @@ shortestRoute(matrix,len(matrix[0])-1)
         dict_[num] = idx
     print(idxs)
     ```
+
+### 真题案例（一）：算法思维
+
+#### 题目1：斐波那契数列
+
+输入x，输出第x位的斐波那契数，例如，输入4，输出2，要求使用递归实现；
+
+1. 复杂度分析：要计算fib(n)，就需要知道fib(n-1)和fib(n-2)，以此类推，复杂度最低也需要O(n)；
+
+2. 问题定位：问题指定了需要递归实现，终止条件为n等于0和1；
+
+3. 数据操作方面：需要对数字进行求和，这里不需要复杂的数据结构；
+
+4. 实现代码：
+
+    ```python
+    # 0 1 1 2 3 5 8 ....
+    def fib(x):
+        if x==1 or x==2:
+            return x - 1
+        return fib(x-1) + fib(x-2)
+    ```
+
+#### 题目2：判断数组中是否存在某个数
+
+![image-20200709112239964](C:\Users\pc001\AppData\Roaming\Typora\typora-user-images\image-20200709112239964.png)
+
+给定一个经过任意位数的旋转后的排序数组（可以看作是两个有序数组链接在一起），判断某个数是否再里面，例如给定{4, 5, 6, 7, 0, 1, 2}，前三位旋转到了末尾，输入0，输出4；
+
+1. 复杂度分析：直接检索的复杂度为O(n)，但是这里的旋转后的排序数组算是局部有序，有序数组检索使用二分查找可以达到O(logn)；
+
+2. 问题定位：查找类型问题，在一个旋转后有序数组；
+
+3. 数据操作方面：需要索引数组中的数字，并对比target，难点在于对比了mid后是向左走还是向右走；
+
+4. 实现代码：
+
+    ```python
+    # 2 4 5 6 7 0 1 mid=6 左边有序，右边旋转
+    # 7 0 1 2 4 5 6 mid=2 左边旋转，右边有序
+    # 5 6 7 0 1 2 4 mid=0 左边有序，右边有序，极端情况，正好在边界
+    def search(arr, target, offset):
+        if not arr or len(arr) <= 0:
+            return -1
+        mid = int(len(arr)/2)
+        if arr[mid]==target:
+            return mid + offset
+        print(arr,mid,arr[mid])
+        if arr[0] < arr[mid-1]:
+            if target >= arr[mid-1]:
+                return search(arr[:mid], target, offset)
+            else:
+                return search(arr[mid+1:], target, offset + mid+1)
+        else:
+            if arr[mid-1] < arr[mid]:
+                if arr[mid-1] >= target:
+                    return search(arr[:mid], target, offset)
+                else:
+                    return search(arr[mid+1:], target, offset + mid+1)
+            else:
+                if arr[0] >= target:
+                    return search(arr[:mid], target, offset)
+                else:
+                    return search(arr[mid+1:], target, offset + mid+1)
+        return -1
+    
+    arr = [2,4,5,6,7,0,1]
+    arr = [7,0,1,2,4,5,6]
+    arr = [5,6,7,0,1,2,4]
+    target = 0
+    search(arr, target, 0)
+    ```
+
+#### 题目3：最大公共子串
+
+输入两个字符串，利用动态规划，求解最大公共子串，比如输入a=13452439，b=123456，则返回345；
+
+暴力法：
+
+```python
+def maxSubStr(s1,s2):
+    '''
+    暴力法：O(n^3)；
+    '''
+    maxLen = 0
+    maxStr = ''
+    for i in range(len(s1)):
+        for j in range(len(s2)):
+            if s2[j]==s1[i]:
+                k = 1
+                while k+i < len(s1) and k+j < len(s2) and s1[k+i]==s2[k+j]:
+                    k += 1
+                if k > maxLen:
+                    maxLen = k
+                    maxStr = s1[i:k+i]
+    return maxLen,maxStr
+
+maxSubStr('13452439','123456')
+```
+
+DP法：
+
+```python
+def maxSubStr(s1,s2):
+    '''
+    DP：动态规划，复杂度降低一个数量级O(n^2)；
+    '''
+    maxLen = 0
+    maxStr = ''
+    matrix = [[0 for a in s1] for b in s2]
+    for i in range(len(s1)):
+        for j in range(len(s2)):
+            if s2[j]==s1[i]:
+                matrix[j][i] = 1 + (matrix[j-1][i-1] if i>=1 and j>=1 else 0)
+                if matrix[j][i] > maxLen:
+                    maxLen = matrix[j][i]
+                    maxStr = s1[i-maxLen+1:i+1]
+    return maxLen,maxStr
+
+maxSubStr('13452439','123456')
+```
+
+### 真题案例（二）：数据结构
+
+### 真题案例
+
+### 真题案例
 
 ## 最后
 
