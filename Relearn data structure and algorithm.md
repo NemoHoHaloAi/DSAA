@@ -1152,6 +1152,87 @@ maxSubStr('13452439','123456')
 
 ### 真题案例（二）：数据结构
 
+#### 题目1：反转字符串中的单词
+
+输入“This is a good example”，输出"example good a is This"；
+
+```python
+# 不使用数据结构的暴力法需要两个循环
+# 使用栈来实现逆序更加合理自然
+# 当然python中直接反转数组也很方便
+def reserveStr(str):
+    arr = []
+    tmp = ''
+    for s in str+' ':
+        if s == ' ' and tmp!='':
+            arr.append(tmp)
+            tmp = ''
+        else:
+            tmp += s
+    return ' '.join(arr[::-1])
+reserveStr('This is a good example')
+```
+
+#### 题目2：数的层序遍历
+
+给定一棵树，按照层次顺序遍历并打印这棵树；
+
+```python
+class Node:
+    val = None
+    left = None
+    right = None
+    def __init__(self,val,left,right):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# 遍历树，从根节点开始，入队出队的操作可以用队列的思想实现
+def printTree(nodes):
+    if not nodes:
+        return []
+    childs = []
+    for node in nodes:
+        if node:
+            childs += [node.left,node.right]
+    return [node.val for node in nodes if node] + printTree(childs)
+
+ll = Node(10,None,None)
+lr = Node(15,None,None)
+l = Node(13,ll,lr)
+rrl = Node(21,None,None)
+rrr = Node(26,None,None)
+rr = Node(22,rrl,rrr)
+r = Node(20,None,rr)
+root = Node(16,l,r)
+print(printTree([root]))
+```
+
+#### 题目3：查找数据流中的中位数
+
+在一个流式数据中，查找中位数，如果是偶数个，则返回偏左边的那个元素；
+
+```python
+# 这个是流式数据，实时在增加的；
+# 这里使用的是大顶堆和小顶堆的数据结构来抽象化问题；
+```
+
+#### 练习：二叉树蛇形层序遍历
+
+也就是说奇数层从左到右，偶数层从右到左；
+
+```python
+# 遍历树，从根节点开始，入队出队的操作可以用队列的思想实现
+def printTree(nodes, lvl):
+    if not nodes:
+        return []
+    childs = []
+    for node in nodes:
+        if node:
+            childs += [node.left,node.right]
+    return [node.val for node in (nodes if lvl%2==1 else nodes[::-1]) if node] + printTree(childs, lvl+1)
+```
+
 ### 真题案例
 
 ### 真题案例
