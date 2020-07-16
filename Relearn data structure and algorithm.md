@@ -1233,7 +1233,39 @@ def printTree(nodes, lvl):
     return [node.val for node in (nodes if lvl%2==1 else nodes[::-1]) if node] + printTree(childs, lvl+1)
 ```
 
-### 真题案例
+### 真题案例（三）：LeetCode真题
+
+#### 题目1：删除排序数组中的重复项
+
+给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后的数组和新的长度，你不需要考虑数组中超出新长度后面的元素；
+
+```python
+def delRepeat(arr):
+    tmp = arr[0] # 有序去重数组的最后一个元素
+    len_ = 1 # 有序去重数组的实际长度
+    for num in arr[1:]:
+        if num == tmp:
+            continue
+        arr[len_] = num
+        tmp = num
+        len_ += 1
+    return len_,arr[:len_]
+delRepeat([0,0,1,1,1,1,2,3,4,4,5])
+```
+
+#### 题目2：查找两个有序数组合并后的中位数
+
+两个有序数组查找合并之后的中位数。给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2，请你找出这两个正序数组合在一起之后的中位数，并且要求算法的时间复杂度为 O(log(m + n))；
+
+你可以假设 nums1 和 nums2 不会同时为空，所有的数字全都不相等，还可以再假设，如果数字个数为偶数个，中位数就是中间偏左的那个元素；
+
+```python
+# 时间复杂度要求为O(log(m+n))，那么基本离不开二分的思路，否则无法降这么低
+def searchMedian(nums1,nums2):
+    pass
+```
+
+
 
 ### 真题案例
 
